@@ -41,8 +41,8 @@ stages:
                   sqlAdminPassword=$(sqlAdminPassword) /
                   storageName=$(storageName)
     
-- stage: Deploy_Resources_Prod
-  displayName: "Déployer Les Resources en Prod"
+- stage: Deploy_Resources_Pro
+  displayName: "Déployer Les Resources en Pro"
   dependsOn: 'Deploy_Resources_Dev'
   condition: succeeded()
   pool:
