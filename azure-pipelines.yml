@@ -1,0 +1,69 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- main  # Déclenchement sur la branche principale
+
+variables:
+      rg: 'rg-wilfried'
+      location: '2'
+      bicepfile: '**/bicep/main.bicep'
+      sqlServerName: 'sv-server-tp3'
+      sqlAdminLogin: 'wilfriedTsague'
+      storageName: 'storagetp3'
+      azureconnection : 'sc-azure-Hinault-TP 3'
+
+stages:
+# Étape 1: Validation des API en Dev
+- stage: Deploy_Resources_Dev
+  displayName: "Déployer Les Resources en Dev"
+  pool:
+    vmImage: 'ubuntu-latest'
+  jobs:
+    - deployment: 'Deploy_Dev'
+      environment: 'dev'
+      strategy: 
+        runOnce:
+          deploy:
+            steps:
+            - task: AzureCLI@2
+              inputs:
+                azureSubscription: $(azureconnection)
+                scriptType: 'bash'
+                scriptLocation: 'inlineScript'
+                inlineScript: |
+                  az deployment group create --resource-group $(rg) --template-file $(bicepfile) /
+                  --parameters location=$(location) /
+                  sqlServerName=$(sqlServerName) /
+                  sqlAdminLogin=$(sqlAdminLogin) /
+                  sqlAdminPassword=$(sqlAdminPassword) /
+                  storageName=$(storageName)
+    
+- stage: Deploy_Resources_Pro
+  displayName: "Déployer Les Resources en Pro"
+  dependsOn: 'Deploy_Resources_Dev'
+  condition: succeeded()
+  pool:
+    vmImage: 'ubuntu-latest'
+  jobs:
+    - deployment: 'Deploy_Prod'
+      environment: 'pro'
+      strategy: 
+        runOnce:
+          deploy:
+            steps:
+            - task: AzureCLI@2
+              inputs:
+                azureSubscription: $(azureconnection)
+                scriptType: 'bash'
+                scriptLocation: 'inlineScript'
+                inlineScript: |
+                  az deployment group create --resource-group $(rg) --template-file $(bicepfile) /
+                  --parameters location=$(location) /
+                  sqlServerName=$(sqlServerName) /
+                  sqlAdminLogin=$(sqlAdminLogin) /
+                  sqlAdminPassword=$(sqlAdminPassword) /
+                  storageName=$(storageName)
+      
