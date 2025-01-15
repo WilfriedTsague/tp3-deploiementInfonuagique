@@ -4,7 +4,7 @@
 # https://aka.ms/yaml
 
 trigger:
-- main  # Déclenchement sur la branche principale
+- main  
 
 variables:
       rg: 'rg-wilfried'
@@ -34,6 +34,9 @@ stages:
                 scriptType: 'bash'
                 scriptLocation: 'inlineScript'
                 inlineScript: |
+                  echo "Déploiement en cours..."
+                  az account show
+                  az group list
                   az deployment group create --resource-group $(rg) --template-file $(bicepfile) /
                   --parameters location=$(location) /
                   sqlServerName=$(sqlServerName) /
@@ -66,4 +69,4 @@ stages:
                   sqlAdminLogin=$(sqlAdminLogin) /
                   sqlAdminPassword=$(sqlAdminPassword) /
                   storageName=$(storageName)
-      
+
