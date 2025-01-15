@@ -18,7 +18,7 @@ variables:
 stages:
 # Étape 1: Validation des API en Dev
 - stage: Deploy_Resources_Dev
-  displayName: "Déployer Les Resources de Dev"
+  displayName: "Déployer Les Resources en Dev"
   pool:
     vmImage: 'ubuntu-latest'
   jobs:
@@ -42,7 +42,7 @@ stages:
                   storageName=$(storageName)
     
 - stage: Deploy_Resources_Prod
-  displayName: "Déployer Les Resources de Prod"
+  displayName: "Déployer Les Resources en Prod"
   dependsOn: 'Deploy_Resources_Dev'
   condition: succeeded()
   pool:
