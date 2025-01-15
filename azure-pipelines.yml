@@ -13,7 +13,7 @@ variables:
       sqlServerName: 'sv-server-tp3'
       sqlAdminLogin: 'wilfriedTsague'
       storageName: 'storagetp3'
-      azureconnection : 'sc-azure-Hinault'
+      azureconnection : 'sc-azure-Hinault-TP 3'
 
 stages:
 # Étape 1: Validation des API en Dev
