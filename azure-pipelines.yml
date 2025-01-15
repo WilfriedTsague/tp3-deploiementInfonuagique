@@ -34,9 +34,6 @@ stages:
                 scriptType: 'bash'
                 scriptLocation: 'inlineScript'
                 inlineScript: |
-                  echo "Déploiement en cours..."
-                  az account show
-                  az group list
                   az deployment group create --resource-group $(rg) --template-file $(bicepfile) /
                   --parameters location=$(location) /
                   sqlServerName=$(sqlServerName) /
