@@ -1,0 +1,65 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- main  # Déclenchement sur la branche principale
+
+variables:
+      rg: 'rg-wilfried'
+      location: '2'
+      bicepfile: '**/bicep/main.bicep'
+      sqlServerName: 'sv-server-tp3'
+      sqlAdminLogin: 'wilfriedTsague'
+      storageName: 'storagetp3'
+
+stages:
+# Étape 1: Validation des API en Dev
+- stage: Deploy_Resources_Dev
+  displayName: "Déployer Les Resources de Dev"
+  jobs:
+  - job: Deploy_Resources_Dev
+    displayName: "Déployer Les Resources de Dev"
+    pool:
+      vmImage: 'ubuntu-latest'
+
+    steps:
+    - task: AzureCLI@2
+      inputs:
+        azureSubscription: 'sc-azure-Hinault'
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: |
+          az deployment group create --resource-group $(rg) --template-file $(bicepfile) /
+          --parameters location=$(location) /
+          sqlServerName=$(sqlServerName) /
+          sqlAdminLogin=$(sqlAdminLogin) /
+          sqlAdminPassword=$(sqlAdminPassword) /
+          storageName=$(storageName)
+    
+- stage: Deploy_Resources_Prod
+  displayName: "Déployer Les Resources de Prod"
+  dependsOn: 'Deploy_Resources_Dev'
+  condition: succeeded()
+  jobs:
+  - job: Deploy_Resources_Prod
+    displayName: "Déployer Les Resources de Prod"
+    pool:
+      vmImage: 'ubuntu-latest'
+
+    steps:
+    - task: AzureCLI@2
+      inputs:
+        azureSubscription: 'sc-azure-Hinault'
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: |
+          az deployment group create --resource-group $(rg) --template-file $(bicepfile) /
+          --parameters location=$(location) /
+          sqlServerName=$(sqlServerName) /
+          sqlAdminLogin=$(sqlAdminLogin) /
+          sqlAdminPassword=$(sqlAdminPassword) /
+          storageName=$(storageName)
+      
+   
