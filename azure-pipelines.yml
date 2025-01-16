@@ -9,7 +9,7 @@ trigger:
 variables:
       rg: 'rg-wilfried'
       location: '2'
-      bicepfile: '**/bicep/main.bicep'
+      bicepfile: '/bicep/main.bicep'
       sqlServerName: 'sv-server-tp3'
       sqlAdminLogin: 'wilfriedTsague'
       storageName: 'storagetp3'
@@ -55,10 +55,6 @@ stages:
                 scriptType: 'bash'
                 scriptLocation: 'inlineScript'
                 inlineScript: |
-                  az deployment group create --resource-group $(rg) --template-file $(bicepfile) /
-                  --parameters location=$(location) /
-                  sqlServerName=$(sqlServerName) /
-                  sqlAdminLogin=$(sqlAdminLogin) /
-                  sqlAdminPassword=$(sqlAdminPassword) /
-                  storageName=$(storageName)
+                  az deployment group create --resource-group $(rg) --template-file $(bicepfile) --parameters location=$(location) sqlServerName=$(sqlServerName) sqlAdminLogin=$(sqlAdminLogin) sqlAdminPassword=$(sqlAdminPassword) storageName=$(storageName)
+    
 
