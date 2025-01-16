@@ -9,7 +9,7 @@ trigger:
 variables:
       rg: 'rg-wilfried'
       location: '2'
-      bicepfile: '/bicep/main.bicep'
+      bicepfile: '**/main.bicep'
       sqlServerName: 'sv-server-tp3'
       sqlAdminLogin: 'wilfriedTsague'
       storageName: 'storagetp3'
@@ -28,6 +28,7 @@ stages:
         runOnce:
           deploy:
             steps:
+            - checkout: self
             - task: AzureCLI@2
               inputs:
                 azureSubscription: $(azureconnection)
