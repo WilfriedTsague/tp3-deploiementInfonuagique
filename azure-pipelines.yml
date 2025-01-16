@@ -34,12 +34,7 @@ stages:
                 scriptType: 'bash'
                 scriptLocation: 'inlineScript'
                 inlineScript: |
-                  az deployment group create --resource-group $(rg) --template-file $(bicepfile) /
-                  --parameters location=$(location) /
-                  sqlServerName=$(sqlServerName) /
-                  sqlAdminLogin=$(sqlAdminLogin) /
-                  sqlAdminPassword=$(sqlAdminPassword) /
-                  storageName=$(storageName)
+                  az deployment group create --resource-group $(rg) --template-file $(bicepfile) --parameters location=$(location) sqlServerName=$(sqlServerName) sqlAdminLogin=$(sqlAdminLogin) sqlAdminPassword=$(sqlAdminPassword) storageName=$(storageName)
     
 - stage: Deploy_Resources_Pro
   displayName: "Déployer Les Resources en Pro"
