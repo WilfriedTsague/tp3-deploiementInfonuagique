@@ -18,6 +18,25 @@ jobs:
   - job: 'Build'
     steps:
     - task: DotNetCoreCLI@2
-      displayName: 'dotnet build $(buildConfiguration)'
+      displayName: 'Restauration des packages NuGet'
       inputs:
         command: 'restore'
+        projects: '**/*.csproj'
+        feedsToUse: 'select'
+    
+    - task : DotNetCoreCLI@2
+      displayName: 'Génération de la solution'
+      inputs:
+        command: 'build'
+        projects: '**/*.csproj'
+        arguments: '--confirguration $(buildConfiguration)'
+    
+    - task: DotNetCoreCLI@2
+      displayName: 'Excusion des test unitaires'
+      inputs:
+        command: 'test'
+        projects: '**/*.UniTest.csproj'
+        arguments: '--confirguration $(buildConfiguration)'
+    
+    - task: DotNetCoreCLI@2
+      displayName: 'publication de la solution'
