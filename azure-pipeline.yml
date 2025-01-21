@@ -6,35 +6,139 @@
 trigger:
 - main
 
-pool:
-  vmImage: ubuntu-latest
-
 variables:
   buildConfiguration: 'Release'
   serviceconnection: 'sc-azure-hinault TP 3'
 
+stages:
+- stage: Build
+  displayName: "build , execution des tests et publication"
+  pool:
+    vmImage: ubuntu-latest
+  jobs:
+    - job: 'BuildAPIs'
+      steps:
+      - task: DotNetCoreCLI@2
+        displayName: 'Restauration des packages NuGet'
+        inputs:
+          command: 'restore'
+          projects: '**/*.csproj'
+          feedsToUse: 'select'
+      
+      - task: DotNetCoreCLI@2
+        displayName: 'Execution des test unitaires'
+        inputs:
+          command: 'test'
+          projects:
+            -'**/BanqueTardiTP/Assurances.UniTest/*.UnitTest.csproj'
+            -'**/BanqueTardiTP/CalculInterets.UnitTest/*.UnitTest.csproj'
+            -'**/BanqueTardiTP/CarteDeCredit.UnitTest/*.UnitTest.csproj'
+          arguments: '--configuration $(buildConfiguration)'
 
-jobs:
-  - job: 'Build'
-    steps:
-    - task: DotNetCoreCLI@2
-      displayName: 'Restauration des packages NuGet'
-      inputs:
-        command: 'restore'
-        projects: '**/*.csproj'
-        feedsToUse: 'select'
-    
-    - task : DotNetCoreCLI@2
-      displayName: 'Génération de la solution'
-      inputs:
-        command: 'build'
-        projects: '**/*.csproj'
-        arguments: '--confirguration $(buildConfiguration)'
-    
-    - task: DotNetCoreCLI@2
-      displayName: 'Excusion des test unitaires'
-      inputs:
-        command: 'test'
-        projects: '**/*.UniTest.csproj'
-        arguments: '--confirguration $(buildConfiguration)'
-    
+      - task: DotNetCoreCLI@2
+        displayName: 'Compilation des API'
+        inputs:
+          command: 'build'
+          projects:
+            -'**/BanqueTardiTP/Assurances.API/*.csproj'
+            -'**/BanqueTardiTP/CalculInterets.API/*.csproj'
+            -'**/BanqueTardiTP/CarteDeCredit.API/*.csproj'
+          arguments: '--configuration $(buildConfiguration)'
+
+    - job: BuildMVC
+      dependsOn: BuildAPIs
+      steps:
+        - task: DotNetCoreCLI@2
+          displayName: "Restauration des Package NuGet MVC"
+          inputs:
+            command: 'restore'
+            projects: '**/*.csproj'
+            feedsToUse: 'select'
+        
+        - task: DotNetCoreCLI@2
+          displayName: "Execution des test unitaire MVC"
+          inputs:
+            command: 'build'
+            projects: '**/BanqueTardi.UnitTest/*.UnitTest.csproj'
+            arguments: '--configuration $(buildConfiguration)'
+
+        - task: DotNetCoreCLI@2
+          displayName: "compilation du MVC"
+          inputs:
+            command: 'build'
+            projects: '**/BanqueTardi/*.csproj'
+            arguments: '--configuration $(buildConfiguration)'
+        
+        - task: DotNetCoreCLI@2
+          inputs:
+            command: 'publish'
+            publishWebProjects: true
+            arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+          displayName: 'Génération du package de publication'
+        
+        - task: PublishBuildArtifacts@1
+          inputs:
+            PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+            ArtifactName: 'drop'
+            publishLocation: 'Container'
+          displayName: 'Publication du package dan sazure DevOps'
+
+- stage: DeployDev
+  displayName: "Deploiment en Dev"
+  pool:
+    vmImage: ubuntu-latest
+  dependsOn: Build
+  jobs:
+    - job: DeployAPIsToDev
+      steps:
+        - task: DotNetCoreCLI@2
+          displayName: "publication des APIs"
+          inputs:
+            command: publish
+            projects:
+              -'**/BanqueTardiTP/Assurances.API/*.csproj'
+              -'**/BanqueTardiTP/CalculInterets.API/*.csproj'
+              -'**/BanqueTardiTP/CarteDeCredit.API/*.csproj'
+            arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+        - task: AzureWebApp@1
+          displayName: "Déploiement de Assurances.API"
+          inputs:
+            azureSubscription: $(serviceconnection)
+            appType: webApp
+            appName: 'webapp-apiassurance-fnz77m5mskwra'
+            package: '$(Build.ArtifactStagingDirectory)/Assurances.API'
+
+        - task: AzureWebApp@1
+          displayName: "Déploiement de CalculInterets.API"
+          inputs:
+            azureSubscription: $(serviceconnection)
+            appType: webApp
+            appName: 'webapp-apiinteret-fnz77m5mskwra'
+            package: '$(Build.ArtifactStagingDirectory)/CalculInterets.API'
+
+        - task: AzureWebApp@1
+          displayName: "Déploiement de CarteDeCredit.API"
+          inputs:
+            azureSubscription: $(serviceconnection)
+            appType: webApp
+            appName: 'webapp-apicredit-fnz77m5mskwra'
+            package: '$(Build.ArtifactStagingDirectory)/CarteDeCredit.API'
+  
+    - job: DeployMVC
+      dependsOn: DeployAPIsToDev
+      condition: succeeded()
+      steps:
+        - task: DotNetCoreCLI@2
+          displayName: "publication de l'application MVC"
+          inputs:
+            command: publish
+            projects: '**/BanqueTardi/*.csproj'
+            arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+        - task: AzureWebApp@1
+          displayName: "publication du MVC sur azure"
+          inputs:
+            azureSubscription: $(serviceconnection)
+            appType: webApp
+            appName: 'webapp-mvc-fnz77m5mskwra'
+            package: '$(Build.ArtifactStagingDirectory)/BanqueTardi'
+
