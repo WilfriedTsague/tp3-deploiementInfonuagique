@@ -38,5 +38,3 @@ jobs:
         projects: '**/*.UniTest.csproj'
         arguments: '--confirguration $(buildConfiguration)'
     
-    - task: DotNetCoreCLI@2
-      displayName: 'publication de la solution'
