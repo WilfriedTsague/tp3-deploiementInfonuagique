@@ -16,9 +16,25 @@ variables:
       azureconnection : 'sc-azure-Hinault-TP 3'
 
 stages:
+- stage: Deploy_Resources_Build
+  displayName: "Déplyer les Resources en Build"
+  pool: 
+    vmImage: 'ubuntu-latest'
+  jobs:
+    - job: 'Deploy_Resources_Build'
+      steps:
+        - task : AzureCLI@2
+          inputs:
+            azureSubscription: $(azureconnection)
+            scriptType: 'bash'
+            scriptLocation: 'inlineScript'
+            inlineScript: |
+                  az deployment group create --resource-group $(rg) --template-file $(bicepfile) --parameters location=$(location) sqlServerName=$(sqlServerName) sqlAdminLogin=$(sqlAdminLogin) sqlAdminPassword=$(sqlAdminPassword) storageName=$(storageName)
+
 # Étape 1: Validation des API en Dev
 - stage: Deploy_Resources_Dev
   displayName: "Déployer Les Resources en Dev"
+  dependsOn: 'Deploy_Resources_Build'
   pool:
     vmImage: 'ubuntu-latest'
   jobs:
