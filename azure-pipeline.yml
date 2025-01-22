@@ -29,10 +29,10 @@ stages:
         displayName: 'Execution des test unitaires'
         inputs:
           command: 'test'
-          projects:
-            -'**/BanqueTardiTP/Assurances.UniTest/*.UnitTest.csproj'
-            -'**/BanqueTardiTP/CalculInterets.UnitTest/*.UnitTest.csproj'
-            -'**/BanqueTardiTP/CarteDeCredit.UnitTest/*.UnitTest.csproj'
+          projects: |
+            '**/BanqueTardiTP/Assurances.UnitTest/*.UnitTest.csproj'
+            '**/BanqueTardiTP/CalculInterets.UnitTest/*.UnitTest.csproj'
+            '**/BanqueTardiTP/CarteDeCredit.UnitTest/*.UnitTest.csproj'
           arguments: '--configuration $(buildConfiguration)'
 
       - task: DotNetCoreCLI@2
