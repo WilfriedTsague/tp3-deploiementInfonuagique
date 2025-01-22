@@ -40,9 +40,9 @@ stages:
         inputs:
           command: 'build'
           projects: |
-            '**/BanqueTardiTP/Assurances.API/*.csproj'
-            '**/BanqueTardiTP/CalculInterets.API/*.csproj'
-            '**/BanqueTardiTP/CarteDeCredit.API/*.csproj'
+            '**/BanqueTardiTP/Assurances.API/*API.csproj'
+            '**/BanqueTardiTP/CalculInterets.API/*API.csproj'
+            '**/BanqueTardiTP/CarteDeCredit.API/*API.csproj'
           arguments: '--configuration $(buildConfiguration)'
 
     - job: BuildMVC
@@ -66,7 +66,7 @@ stages:
           displayName: "compilation du MVC"
           inputs:
             command: 'build'
-            projects: '**/BanqueTardi/*.csproj'
+            projects: '**/BanqueTardi/*MVC.csproj'
             arguments: '--configuration $(buildConfiguration)'
         
         - task: DotNetCoreCLI@2
@@ -96,9 +96,9 @@ stages:
           inputs:
             command: publish
             projects: |
-              '**/BanqueTardiTP/Assurances.API/*.csproj'
-              '**/BanqueTardiTP/CalculInterets.API/*.csproj'
-              '**/BanqueTardiTP/CarteDeCredit.API/*.csproj'
+              '**/BanqueTardiTP/Assurances.API/*API.csproj'
+              '**/BanqueTardiTP/CalculInterets.API/*API.csproj'
+              '**/BanqueTardiTP/CarteDeCredit.API/*API.csproj'
             arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
         - task: AzureWebApp@1
           displayName: "Déploiement de Assurances.API"
@@ -153,9 +153,9 @@ stages:
           inputs:
             command: publish
             projects: |
-              '**/BanqueTardiTP/Assurances.API/*.csproj'
-              '**/BanqueTardiTP/CalculInterets.API/*.csproj'
-              '**/BanqueTardiTP/CarteDeCredit.API/*.csproj'
+              '**/BanqueTardiTP/Assurances.API/*API.csproj'
+              '**/BanqueTardiTP/CalculInterets.API/*API.csproj'
+              '**/BanqueTardiTP/CarteDeCredit.API/*API.csproj'
             arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
         - task: AzureWebApp@1
           displayName: "Déploiement de Assurances.API"
@@ -187,7 +187,7 @@ stages:
           displayName: "publication de l'application MVC"
           inputs:
             command: publish
-            projects: '**/BanqueTardi/*.csproj'
+            projects: '**/BanqueTardi/*MVC.csproj'
             arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
         - task: AzureWebApp@1
           displayName: "publication du MVC sur azure"
