@@ -39,10 +39,10 @@ stages:
         displayName: 'Compilation des API'
         inputs:
           command: 'build'
-          projects:
-            -'**/BanqueTardiTP/Assurances.API/*.csproj'
-            -'**/BanqueTardiTP/CalculInterets.API/*.csproj'
-            -'**/BanqueTardiTP/CarteDeCredit.API/*.csproj'
+          projects: |
+            '**/BanqueTardiTP/Assurances.API/*.csproj'
+            '**/BanqueTardiTP/CalculInterets.API/*.csproj'
+            '**/BanqueTardiTP/CarteDeCredit.API/*.csproj'
           arguments: '--configuration $(buildConfiguration)'
 
     - job: BuildMVC
@@ -95,10 +95,70 @@ stages:
           displayName: "publication des APIs"
           inputs:
             command: publish
-            projects:
-              -'**/BanqueTardiTP/Assurances.API/*.csproj'
-              -'**/BanqueTardiTP/CalculInterets.API/*.csproj'
-              -'**/BanqueTardiTP/CarteDeCredit.API/*.csproj'
+            projects: |
+              '**/BanqueTardiTP/Assurances.API/*.csproj'
+              '**/BanqueTardiTP/CalculInterets.API/*.csproj'
+              '**/BanqueTardiTP/CarteDeCredit.API/*.csproj'
+            arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+        - task: AzureWebApp@1
+          displayName: "Déploiement de Assurances.API"
+          inputs:
+            azureSubscription: $(serviceconnection)
+            appType: webApp
+            appName: 'webapp-apiassurance-fnz77m5mskwra'
+            package: '$(Build.ArtifactStagingDirectory)/Assurances.API'
+
+        - task: AzureWebApp@1
+          displayName: "Déploiement de CalculInterets.API"
+          inputs:
+            azureSubscription: $(serviceconnection)
+            appType: webApp
+            appName: 'webapp-apiinteret-fnz77m5mskwra'
+            package: '$(Build.ArtifactStagingDirectory)/CalculInterets.API'
+
+        - task: AzureWebApp@1
+          displayName: "Déploiement de CarteDeCredit.API"
+          inputs:
+            azureSubscription: $(serviceconnection)
+            appType: webApp
+            appName: 'webapp-apicredit-fnz77m5mskwra'
+            package: '$(Build.ArtifactStagingDirectory)/CarteDeCredit.API'
+  
+    - job: DeployMVC
+      dependsOn: DeployAPIsToDev
+      condition: succeeded()
+      steps:
+        - task: DotNetCoreCLI@2
+          displayName: "publication de l'application MVC"
+          inputs:
+            command: publish
+            projects: '**/BanqueTardi/*.csproj'
+            arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+        - task: AzureWebApp@1
+          displayName: "publication du MVC sur azure"
+          inputs:
+            azureSubscription: $(serviceconnection)
+            appType: webApp
+            appName: 'webapp-mvc-fnz77m5mskwra'
+            package: '$(Build.ArtifactStagingDirectory)/BanqueTardi'
+
+
+- stage: DeployProd
+  displayName: "Deploiment en Prod"
+  pool:
+    vmImage: ubuntu-latest
+  dependsOn: DeployDev
+  jobs:
+    - job: DeployAPIsToProd
+      steps:
+        - task: DotNetCoreCLI@2
+          displayName: "publication des APIs"
+          inputs:
+            command: publish
+            projects: |
+              '**/BanqueTardiTP/Assurances.API/*.csproj'
+              '**/BanqueTardiTP/CalculInterets.API/*.csproj'
+              '**/BanqueTardiTP/CarteDeCredit.API/*.csproj'
             arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
         - task: AzureWebApp@1
           displayName: "Déploiement de Assurances.API"
