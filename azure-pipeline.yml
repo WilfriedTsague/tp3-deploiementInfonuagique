@@ -21,7 +21,7 @@ stages:
       - task: UseDotNet@2
         inputs:
           packageType: sdk
-          version: '3.1.3' 
+          version: '3.1' 
           installationPath: $(Agent.ToolsDirectory)/dotnet
 
       - task: DotNetCoreCLI@2
