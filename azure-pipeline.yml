@@ -107,7 +107,6 @@ stages:
             appType: webApp
             appName: 'webapp-apiassurance-fnz77m5mskwra'
             package: '$(Build.ArtifactStagingDirectory)/Assurances.API'
-
         - task: AzureWebApp@1
           displayName: "Déploiement de CalculInterets.API"
           inputs:
@@ -115,7 +114,6 @@ stages:
             appType: webApp
             appName: 'webapp-apiinteret-fnz77m5mskwra'
             package: '$(Build.ArtifactStagingDirectory)/CalculInterets.API'
-
         - task: AzureWebApp@1
           displayName: "Déploiement de CarteDeCredit.API"
           inputs:
@@ -166,7 +164,6 @@ stages:
             appType: webApp
             appName: 'webapp-apiassurance-fnz77m5mskwra'
             package: '$(Build.ArtifactStagingDirectory)/Assurances.API'
-
         - task: AzureWebApp@1
           displayName: "Déploiement de CalculInterets.API"
           inputs:
@@ -174,7 +171,6 @@ stages:
             appType: webApp
             appName: 'webapp-apiinteret-fnz77m5mskwra'
             package: '$(Build.ArtifactStagingDirectory)/CalculInterets.API'
-
         - task: AzureWebApp@1
           displayName: "Déploiement de CarteDeCredit.API"
           inputs:
@@ -184,7 +180,7 @@ stages:
             package: '$(Build.ArtifactStagingDirectory)/CarteDeCredit.API'
   
     - job: DeployMVC
-      dependsOn: DeployAPIsToDev
+      dependsOn: DeployAPIsToProd
       condition: succeeded()
       steps:
         - task: DotNetCoreCLI@2
