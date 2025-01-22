@@ -142,7 +142,6 @@ stages:
             appName: 'webapp-mvc-fnz77m5mskwra'
             package: '$(Build.ArtifactStagingDirectory)/BanqueTardi'
 
-
 - stage: DeployProd
   displayName: "Deploiment en Prod"
   pool:
