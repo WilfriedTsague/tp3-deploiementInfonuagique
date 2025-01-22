@@ -18,6 +18,12 @@ stages:
   jobs:
     - job: 'BuildAPIs'
       steps:
+      - task: UseDotNet@2
+        inputs:
+          packageType: sdk
+          version: '3.1.3' 
+          installationPath: $(Agent.ToolsDirectory)/dotnet
+
       - task: DotNetCoreCLI@2
         displayName: 'Restauration des packages NuGet'
         inputs:
