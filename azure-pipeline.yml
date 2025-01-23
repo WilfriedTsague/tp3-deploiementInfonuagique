@@ -145,10 +145,10 @@ stages:
           displayName: "publication de l'application MVC"
           inputs:
             command: publish
-            projects: '**/BanqueTardiTP/BanqueTardi/*.MVC.csproj'
+            projects: '**/BanqueTardiTP/BanqueTardi/BanqueTardi.MVC.csproj'
             arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
         - task: AzureWebApp@1
-          displayName: "publication du MVC sur azure"
+          displayName: "Deploiement du MVC "
           inputs:
             azureSubscription: $(serviceconnection)
             appType: webApp
