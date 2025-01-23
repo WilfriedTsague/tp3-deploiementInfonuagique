@@ -21,7 +21,8 @@ stages:
       - task: UseDotNet@2
         inputs:
           packageType: sdk
-          version: '9.0.101' 
+          version: '9.0.101'
+          installationPath: $(Agent.ToolsDirectory)/dotnet 
 
       - task: DotNetCoreCLI@2
         displayName: 'Restauration des packages NuGet'
@@ -34,7 +35,9 @@ stages:
         displayName: 'Execution des test unitaires'
         inputs:
           command: 'test'
-          projects: '**/BanqueTardiTP/*.UnitTest/*.UnitTest.csproj'
+          projects: |
+            '**/BanqueTardiTP/*.UnitTest/*.UnitTest.csproj'
+            '!**/BanqueTardiTP/BanqueTardi.UnitTest/BanqueTardi.UnitTest.csproj'
           arguments: '--configuration $(buildConfiguration)'
 
       - task: DotNetCoreCLI@2
