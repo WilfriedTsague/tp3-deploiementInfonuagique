@@ -137,7 +137,7 @@ stages:
             appName: 'webapp-apicredit-fnz77m5mskwra'
             package: '$(Build.ArtifactStagingDirectory)/CarteDeCredit.API'
   
-    - job: DeployMVC
+    - job: DeployMVCToDev
       dependsOn: DeployAPIsToDev
       condition: succeeded()
       steps:
@@ -145,7 +145,7 @@ stages:
           displayName: "publication de l'application MVC"
           inputs:
             command: publish
-            projects: '**/BanqueTardi/*.csproj'
+            projects: '**/BanqueTardiTP/BanqueTardi/*.MVC.csproj'
             arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
         - task: AzureWebApp@1
           displayName: "publication du MVC sur azure"
@@ -215,7 +215,7 @@ stages:
           displayName: "publication de l'application MVC"
           inputs:
             command: publish
-            projects: '**/BanqueTardi/*.MVC.csproj'
+            projects: '**/BanqueTardiTP/BanqueTardi/*.MVC.csproj'
             arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
         - task: AzureWebApp@1
           displayName: "publication du MVC sur azure"
