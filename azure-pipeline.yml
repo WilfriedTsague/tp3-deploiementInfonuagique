@@ -93,12 +93,28 @@ stages:
   jobs:
     - job: DeployAPIsToDev
       steps:
+       # Publication des APIs avec des répertoires spécifiques
         - task: DotNetCoreCLI@2
-          displayName: "publication des APIs"
+          displayName: "Publication de Assurances.API"
           inputs:
             command: publish
-            projects: '**/BanqueTardiTP/*.API/*.API.csproj'
-            arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+            projects: '**/BanqueTardiTP/Assurances.API/Assurances.API.csproj'
+            arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)/Assurances.API'
+
+        - task: DotNetCoreCLI@2
+          displayName: "Publication de CalculInterets.API"
+          inputs:
+            command: publish
+            projects: '**/BanqueTardiTP/CalculInterets.API/CalculInterets.API.csproj'
+            arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)/CalculInterets.API'
+
+        - task: DotNetCoreCLI@2
+          displayName: "Publication de CarteDeCredit.API"
+          inputs:
+            command: publish
+            projects: '**/BanqueTardiTP/CarteDeCredit.API/CarteDeCredit.API.csproj'
+            arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)/CarteDeCredit.API'
+
         - task: AzureWebApp@1
           displayName: "Déploiement de Assurances.API"
           inputs:
@@ -147,12 +163,28 @@ stages:
   jobs:
     - job: DeployAPIsToProd
       steps:
+        # Publication des APIs avec des répertoires spécifiques
         - task: DotNetCoreCLI@2
-          displayName: "publication des APIs"
+          displayName: "Publication de Assurances.API"
           inputs:
             command: publish
-            projects: '**/BanqueTardiTP/*.API/*.API.csproj'
-            arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+            projects: '**/BanqueTardiTP/Assurances.API/Assurances.API.csproj'
+            arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)/Assurances.API'
+
+        - task: DotNetCoreCLI@2
+          displayName: "Publication de CalculInterets.API"
+          inputs:
+            command: publish
+            projects: '**/BanqueTardiTP/CalculInterets.API/CalculInterets.API.csproj'
+            arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)/CalculInterets.API'
+
+        - task: DotNetCoreCLI@2
+          displayName: "Publication de CarteDeCredit.API"
+          inputs:
+            command: publish
+            projects: '**/BanqueTardiTP/CarteDeCredit.API/CarteDeCredit.API.csproj'
+            arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)/CarteDeCredit.API'
+
         - task: AzureWebApp@1
           displayName: "Déploiement de Assurances.API"
           inputs:
