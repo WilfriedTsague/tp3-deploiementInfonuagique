@@ -216,12 +216,12 @@ stages:
           inputs:
             command: publish
             projects: '**/BanqueTardiTP/BanqueTardi/*.MVC.csproj'
-            arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+            arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)BanqueTardiMVC'
         - task: AzureWebApp@1
           displayName: "publication du MVC sur azure"
           inputs:
             azureSubscription: $(serviceconnection)
             appType: webApp
             appName: 'webapp-mvc-fnz77m5mskwra'
-            package: '$(Build.ArtifactStagingDirectory)/BanqueTardi'
+            package: '$(Build.ArtifactStagingDirectory)/BanqueTardiMVC'
 
