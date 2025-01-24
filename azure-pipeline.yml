@@ -134,6 +134,7 @@ stages:
                 azureSubscription: $(serviceconnection)
                 appType: webApp
                 appName: 'webapp-apiassurance-fnz77m5mskwra'
+                #utiliser $(System.ArtifactsDirectory)
                 package: '$(Build.ArtifactStagingDirectory)/Assurances.API'
             - task: AzureWebApp@1
               displayName: "Déploiement de CalculInterets.API"
