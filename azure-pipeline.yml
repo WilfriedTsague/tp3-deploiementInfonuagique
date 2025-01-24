@@ -43,15 +43,9 @@ stages:
         displayName: 'Compilation des API et MVC'
         inputs:
           command: 'build'
-          projects: '**/BanqueTardiTP/*.API/*.API.csproj'
+          projects: '**/*.csproj'
           arguments: '--configuration $(buildConfiguration)'
           
-      - task: DotNetCoreCLI@2
-        displayName: "compilation du MVC"
-        inputs:
-          command: 'build'
-          projects: '**/BanqueTardi/*.MVC.csproj'
-          arguments: '--configuration $(buildConfiguration)'
       
       - task: DotNetCoreCLI@2
         displayName: "Publication de Assurances.API"
