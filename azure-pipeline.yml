@@ -67,7 +67,13 @@ stages:
           command: publish
           projects: '**/BanqueTardiTP/CarteDeCredit.API/CarteDeCredit.API.csproj'
           arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)/CarteDeCredit.API'        
-      
+      - task: PublishBuildArtifacts@1
+        inputs:
+          PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+          ArtifactName: 'drop'
+          publishLocation: 'Container'
+        displayName: 'Publication du package dans azure DevOps'
+
     - job: BuildMVC
       dependsOn: BuildAPIs
       steps:
