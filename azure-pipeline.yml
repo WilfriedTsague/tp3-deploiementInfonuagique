@@ -45,39 +45,40 @@ stages:
           command: 'build'
           projects: '**/BanqueTardiTP/*.API/*.API.csproj'
           arguments: '--configuration $(buildConfiguration)'
-      
-      - task: DotNetCoreCLI@2
-        displayName: "Publication de Assurances.API"
-        inputs:
-          command: publish
-          projects: '**/BanqueTardiTP/Assurances.API/Assurances.API.csproj'
-          arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)/Assurances.API'
-
-      - task: DotNetCoreCLI@2
-        displayName: "Publication de CalculInterets.API"
-        inputs:
-          command: publish
-          projects: '**/BanqueTardiTP/CalculInterets.API/CalculInterets.API.csproj'
-          arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)/CalculInterets.API'
+          
       - task: DotNetCoreCLI@2
         displayName: "compilation du MVC"
         inputs:
           command: 'build'
           projects: '**/BanqueTardi/*.MVC.csproj'
           arguments: '--configuration $(buildConfiguration)'
+      
+      - task: DotNetCoreCLI@2
+        displayName: "Publication de Assurances.API"
+        inputs:
+          command: publish
+          projects: '**/BanqueTardiTP/Assurances.API/Assurances.API.csproj'
+          arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+
+      - task: DotNetCoreCLI@2
+        displayName: "Publication de CalculInterets.API"
+        inputs:
+          command: publish
+          projects: '**/BanqueTardiTP/CalculInterets.API/CalculInterets.API.csproj'
+          arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
       - task: DotNetCoreCLI@2
         displayName: "publication de l'application MVC"
         inputs:
           command: publish
           projects: '**/BanqueTardiTP/BanqueTardi/BanqueTardi.MVC.csproj'
-          arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)/BanqueTardiMVC'
+          arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
 
       - task: DotNetCoreCLI@2
         displayName: "Publication de CarteDeCredit.API"
         inputs:
           command: publish
           projects: '**/BanqueTardiTP/CarteDeCredit.API/CarteDeCredit.API.csproj'
-          arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)/CarteDeCredit.API'        
+          arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'        
       
       - task: PublishBuildArtifacts@1
         inputs:
@@ -109,21 +110,21 @@ stages:
                 appType: webApp
                 appName: 'webapp-apiassurance-fnz77m5mskwra'
                 #utiliser $(System.ArtifactsDirectory)
-                package: '$(Build.ArtifactStagingDirectory)/Assurances.API'
+                package: '$(Build.ArtifactStagingDirectory)/Assurances.API.zip'
             - task: AzureWebApp@1
               displayName: "Déploiement de CalculInterets.API"
               inputs:
                 azureSubscription: $(serviceconnection)
                 appType: webApp
                 appName: 'webapp-apiinteret-fnz77m5mskwra'
-                package: '$(Build.ArtifactStagingDirectory)/CalculInterets.API'
+                package: '$(Build.ArtifactStagingDirectory)/CalculInterets.API.zip'
             - task: AzureWebApp@1
               displayName: "Déploiement de CarteDeCredit.API"
               inputs:
                 azureSubscription: $(serviceconnection)
                 appType: webApp
                 appName: 'webapp-apicredit-fnz77m5mskwra'
-                package: '$(Build.ArtifactStagingDirectory)/CarteDeCredit.API'
+                package: '$(Build.ArtifactStagingDirectory)/CarteDeCredit.API.zip'
 
     - deployment: 'DeployMVCToDev'
       environment: 'dev'
@@ -148,7 +149,7 @@ stages:
                 azureSubscription: $(serviceconnection)
                 appType: webApp
                 appName: 'webapp-mvc-fnz77m5mskwra'
-                package: '$(Build.ArtifactStagingDirectory)/BanqueTardiMVC'
+                package: '$(Build.ArtifactStagingDirectory)/BanqueTardiMVC.zip'
 
 - stage: 'DeployProd'
   displayName: "Deploiment en Prod"
