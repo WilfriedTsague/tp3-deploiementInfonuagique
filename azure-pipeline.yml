@@ -118,8 +118,7 @@ stages:
     vmImage: ubuntu-latest
   dependsOn: Build
   jobs:
-    - job: 'DeployAPIsToDev'
-    - deployment: 'DeployDev'
+    - deployment: 'DeployAPIsToDev'
       environment: 'dev'
       strategy: 
         runOnce:
@@ -127,10 +126,7 @@ stages:
             steps:
             - task: DownloadBuildArtifacts@1
               inputs:
-                buildType: 'current'
-                downloadType: 'single'
                 artifactName: 'drop'
-                itemPattern: '**/Assurances.API/*.zip'
                 downloadPath: '$(System.ArtifactsDirectory)'
             - task: AzureWebApp@1
               displayName: "Déploiement de Assurances.API"
@@ -139,13 +135,6 @@ stages:
                 appType: webApp
                 appName: 'webapp-apiassurance-fnz77m5mskwra'
                 package: '$(Build.ArtifactStagingDirectory)/Assurances.API'
-            - task: DownloadBuildArtifacts@1
-              inputs:
-                buildType: 'current'
-                downloadType: 'single'
-                artifactName: 'drop'
-                itemPattern: '**/CalculInterets.API/*.zip'
-                downloadPath: '$(System.ArtifactsDirectory)'
             - task: AzureWebApp@1
               displayName: "Déploiement de CalculInterets.API"
               inputs:
@@ -153,13 +142,6 @@ stages:
                 appType: webApp
                 appName: 'webapp-apiinteret-fnz77m5mskwra'
                 package: '$(Build.ArtifactStagingDirectory)/CalculInterets.API'
-            - task: DownloadBuildArtifacts@1
-              inputs:
-                buildType: 'current'
-                downloadType: 'single'
-                artifactName: 'drop'
-                itemPattern: '**/CarteDeCredit.API/*.zip'
-                downloadPath: '$(System.ArtifactsDirectory)'
             - task: AzureWebApp@1
               displayName: "Déploiement de CarteDeCredit.API"
               inputs:
@@ -167,9 +149,8 @@ stages:
                 appType: webApp
                 appName: 'webapp-apicredit-fnz77m5mskwra'
                 package: '$(Build.ArtifactStagingDirectory)/CarteDeCredit.API'
-    
-    - job: 'DeployMVCToDev' 
-    - deployment: 'DeployMVCDev'
+
+    - deployment: 'DeployMVCToDev'
       environment: 'dev'
       dependsOn: 'DeployAPIsToDev'
       condition: succeeded()
@@ -200,8 +181,7 @@ stages:
     vmImage: ubuntu-latest
   dependsOn: 'DeployDev'
   jobs:
-    - job: 'DeployAPIsToPro'
-    - deployment: 'DeployAPIsProd'
+    - deployment: 'DeployAPIsToPro'
       environment: 'pro'
       strategy: 
         runOnce:
@@ -209,10 +189,7 @@ stages:
             steps:
             - task: DownloadBuildArtifacts@1
               inputs:
-                buildType: 'current'
-                downloadType: 'single'
                 artifactName: 'drop'
-                itemPattern: '**/Assurances.API/*.zip'
                 downloadPath: '$(System.ArtifactsDirectory)'
             - task: AzureWebApp@1
               displayName: "Déploiement de Assurances.API"
@@ -221,13 +198,6 @@ stages:
                 appType: webApp
                 appName: 'webapp-apiassurance-fnz77m5mskwra'
                 package: '$(Build.ArtifactStagingDirectory)/Assurances.API'
-            - task: DownloadBuildArtifacts@1
-              inputs:
-                buildType: 'current'
-                downloadType: 'single'
-                artifactName: 'drop'
-                itemPattern: '**/CalculInterets.API/*.zip'
-                downloadPath: '$(System.ArtifactsDirectory)'
             - task: AzureWebApp@1
               displayName: "Déploiement de CalculInterets.API"
               inputs:
@@ -235,13 +205,6 @@ stages:
                 appType: webApp
                 appName: 'webapp-apiinteret-fnz77m5mskwra'
                 package: '$(Build.ArtifactStagingDirectory)/CalculInterets.API'
-            - task: DownloadBuildArtifacts@1
-              inputs:
-                buildType: 'current'
-                downloadType: 'single'
-                artifactName: 'drop'
-                itemPattern: '**/CarteDeCredit.API/*.zip'
-                downloadPath: '$(System.ArtifactsDirectory)'
             - task: AzureWebApp@1
               displayName: "Déploiement de CarteDeCredit.API"
               inputs:
@@ -250,7 +213,6 @@ stages:
                 appName: 'webapp-apicredit-fnz77m5mskwra'
                 package: '$(Build.ArtifactStagingDirectory)/CarteDeCredit.API'
     
-    - job: 'DeployMVCToPro'
     - deployment: 'DeployMVCProd'
       environment: 'pro'
       dependsOn: 'DeployAPIsToPro'
