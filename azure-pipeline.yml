@@ -46,6 +46,33 @@ stages:
           command: 'build'
           projects: '**/BanqueTardiTP/*.API/*.API.csproj'
           arguments: '--configuration $(buildConfiguration)'
+      
+      - task: DotNetCoreCLI@2
+        displayName: "Publication de Assurances.API"
+        inputs:
+          command: publish
+          projects: '**/BanqueTardiTP/Assurances.API/Assurances.API.csproj'
+          arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)/Assurances.API'
+
+      - task: DotNetCoreCLI@2
+        displayName: "Publication de CalculInterets.API"
+        inputs:
+          command: publish
+          projects: '**/BanqueTardiTP/CalculInterets.API/CalculInterets.API.csproj'
+          arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)/CalculInterets.API'
+
+      - task: DotNetCoreCLI@2
+        displayName: "Publication de CarteDeCredit.API"
+        inputs:
+          command: publish
+          projects: '**/BanqueTardiTP/CarteDeCredit.API/CarteDeCredit.API.csproj'
+          arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)/CarteDeCredit.API'        
+      - task: PublishBuildArtifacts@1
+        inputs:
+          PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+          ArtifactName: 'drop'
+          publishLocation: 'Container'
+        displayName: 'Publication du package dans azure DevOps'
 
     - job: BuildMVC
       dependsOn: BuildAPIs
@@ -70,20 +97,20 @@ stages:
             command: 'build'
             projects: '**/BanqueTardi/*.MVC.csproj'
             arguments: '--configuration $(buildConfiguration)'
-        
         - task: DotNetCoreCLI@2
+          displayName: "publication de l'application MVC"
           inputs:
-            command: 'publish'
-            publishWebProjects: true
-            arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
-          displayName: 'publication de la solution'
-        
+            command: publish
+            projects: '**/BanqueTardiTP/BanqueTardi/BanqueTardi.MVC.csproj'
+            arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)/BanqueTardiMVC'
+
         - task: PublishBuildArtifacts@1
           inputs:
             PathtoPublish: '$(Build.ArtifactStagingDirectory)'
             ArtifactName: 'drop'
             publishLocation: 'Container'
           displayName: 'Publication du package dans azure DevOps'
+        
 
 - stage: DeployDev
   displayName: "Deploiment en Dev"
@@ -93,28 +120,6 @@ stages:
   jobs:
     - job: DeployAPIsToDev
       steps:
-       # Publication des APIs avec des répertoires spécifiques
-        - task: DotNetCoreCLI@2
-          displayName: "Publication de Assurances.API"
-          inputs:
-            command: publish
-            projects: '**/BanqueTardiTP/Assurances.API/Assurances.API.csproj'
-            arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)/Assurances.API'
-
-        - task: DotNetCoreCLI@2
-          displayName: "Publication de CalculInterets.API"
-          inputs:
-            command: publish
-            projects: '**/BanqueTardiTP/CalculInterets.API/CalculInterets.API.csproj'
-            arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)/CalculInterets.API'
-
-        - task: DotNetCoreCLI@2
-          displayName: "Publication de CarteDeCredit.API"
-          inputs:
-            command: publish
-            projects: '**/BanqueTardiTP/CarteDeCredit.API/CarteDeCredit.API.csproj'
-            arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)/CarteDeCredit.API'
-
         - task: AzureWebApp@1
           displayName: "Déploiement de Assurances.API"
           inputs:
@@ -141,12 +146,6 @@ stages:
       dependsOn: DeployAPIsToDev
       condition: succeeded()
       steps:
-        - task: DotNetCoreCLI@2
-          displayName: "publication de l'application MVC"
-          inputs:
-            command: publish
-            projects: '**/BanqueTardiTP/BanqueTardi/BanqueTardi.MVC.csproj'
-            arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)/BanqueTardiMVC'
         - task: AzureWebApp@1
           displayName: "Deploiement du MVC "
           inputs:
@@ -163,28 +162,6 @@ stages:
   jobs:
     - job: DeployAPIsToProd
       steps:
-        # Publication des APIs avec des répertoires spécifiques
-        - task: DotNetCoreCLI@2
-          displayName: "Publication de Assurances.API"
-          inputs:
-            command: publish
-            projects: '**/BanqueTardiTP/Assurances.API/Assurances.API.csproj'
-            arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)/Assurances.API'
-
-        - task: DotNetCoreCLI@2
-          displayName: "Publication de CalculInterets.API"
-          inputs:
-            command: publish
-            projects: '**/BanqueTardiTP/CalculInterets.API/CalculInterets.API.csproj'
-            arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)/CalculInterets.API'
-
-        - task: DotNetCoreCLI@2
-          displayName: "Publication de CarteDeCredit.API"
-          inputs:
-            command: publish
-            projects: '**/BanqueTardiTP/CarteDeCredit.API/CarteDeCredit.API.csproj'
-            arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)/CarteDeCredit.API'
-
         - task: AzureWebApp@1
           displayName: "Déploiement de Assurances.API"
           inputs:
@@ -211,12 +188,6 @@ stages:
       dependsOn: DeployAPIsToProd
       condition: succeeded()
       steps:
-        - task: DotNetCoreCLI@2
-          displayName: "publication de l'application MVC"
-          inputs:
-            command: publish
-            projects: '**/BanqueTardiTP/BanqueTardi/*.MVC.csproj'
-            arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)/BanqueTardiMVC'
         - task: AzureWebApp@1
           displayName: "publication du MVC sur azure"
           inputs:
