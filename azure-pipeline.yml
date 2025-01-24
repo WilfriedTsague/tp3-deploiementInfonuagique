@@ -37,11 +37,10 @@ stages:
           command: 'test'
           projects: |
             '**/BanqueTardiTP/*.UnitTest/*.UnitTest.csproj'
-            '!**/BanqueTardiTP/BanqueTardi.UnitTest/BanqueTardi.UnitTest.csproj'
           arguments: '--configuration $(buildConfiguration)'
 
       - task: DotNetCoreCLI@2
-        displayName: 'Compilation des API'
+        displayName: 'Compilation des API et MVC'
         inputs:
           command: 'build'
           projects: '**/BanqueTardiTP/*.API/*.API.csproj'
@@ -60,6 +59,18 @@ stages:
           command: publish
           projects: '**/BanqueTardiTP/CalculInterets.API/CalculInterets.API.csproj'
           arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)/CalculInterets.API'
+      - task: DotNetCoreCLI@2
+        displayName: "compilation du MVC"
+        inputs:
+          command: 'build'
+          projects: '**/BanqueTardi/*.MVC.csproj'
+          arguments: '--configuration $(buildConfiguration)'
+      - task: DotNetCoreCLI@2
+        displayName: "publication de l'application MVC"
+        inputs:
+          command: publish
+          projects: '**/BanqueTardiTP/BanqueTardi/BanqueTardi.MVC.csproj'
+          arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)/BanqueTardiMVC'
 
       - task: DotNetCoreCLI@2
         displayName: "Publication de CarteDeCredit.API"
@@ -67,50 +78,13 @@ stages:
           command: publish
           projects: '**/BanqueTardiTP/CarteDeCredit.API/CarteDeCredit.API.csproj'
           arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)/CarteDeCredit.API'        
+      
       - task: PublishBuildArtifacts@1
         inputs:
           PathtoPublish: '$(Build.ArtifactStagingDirectory)'
           ArtifactName: 'drop'
           publishLocation: 'Container'
         displayName: 'Publication du package dans azure DevOps'
-
-    - job: BuildMVC
-      dependsOn: BuildAPIs
-      steps:
-        - task: DotNetCoreCLI@2
-          displayName: "Restauration des Package NuGet MVC"
-          inputs:
-            command: 'restore'
-            projects: '**/*.csproj'
-            feedsToUse: 'select'
-        
-        - task: DotNetCoreCLI@2
-          displayName: "Execution des test unitaire MVC"
-          inputs:
-            command: 'build'
-            projects: '**/BanqueTardi.UnitTest/*.UnitTest.csproj'
-            arguments: '--configuration $(buildConfiguration)'
-
-        - task: DotNetCoreCLI@2
-          displayName: "compilation du MVC"
-          inputs:
-            command: 'build'
-            projects: '**/BanqueTardi/*.MVC.csproj'
-            arguments: '--configuration $(buildConfiguration)'
-        - task: DotNetCoreCLI@2
-          displayName: "publication de l'application MVC"
-          inputs:
-            command: publish
-            projects: '**/BanqueTardiTP/BanqueTardi/BanqueTardi.MVC.csproj'
-            arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)/BanqueTardiMVC'
-
-        - task: PublishBuildArtifacts@1
-          inputs:
-            PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-            ArtifactName: 'drop'
-            publishLocation: 'Container'
-          displayName: 'Publication du package dans azure DevOps'
-        
 
 - stage: 'DeployDev'
   displayName: "Deploiment en Dev"
