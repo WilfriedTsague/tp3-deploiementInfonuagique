@@ -139,7 +139,6 @@ stages:
                 artifactName: 'drop'
                 itemPattern: '**/BanqueTardiMVC/*.zip'
                 downloadPath: '$(System.ArtifactsDirectory)'
-
             - task: AzureWebApp@1
               displayName: "Deploiement du MVC "
               inputs:
