@@ -166,13 +166,6 @@ stages:
               inputs:
                 artifactName: 'drop'
                 downloadPath: '$(System.ArtifactsDirectory)'
-            - task: AzureWebApp@1
-              displayName: "Déploiement de Assurances.API"
-              inputs:
-                azureSubscription: $(serviceconnection)
-                appType: webApp
-                appName: 'webapp-apiassurance-fnz77m5mskwra'
-                package: '/home/vsts/work/1/a/drop/Assurances.API/Assurances.API.zip'
 
             - task: AzureWebApp@1
               displayName: "Déploiement de CalculInterets.API"
@@ -181,6 +174,14 @@ stages:
                 appType: webApp
                 appName: 'webapp-apiinteret-fnz77m5mskwra'
                 package: '$(System.ArtifactsDirectory)/CalculInterets.API/*.zip'
+                
+            - task: AzureWebApp@1
+              displayName: "Déploiement de Assurances.API"
+              inputs:
+                azureSubscription: $(serviceconnection)
+                appType: webApp
+                appName: 'webapp-apiassurance-fnz77m5mskwra'
+                package: '$(System.ArtifactsDirectory)/Assurances.API/*.zip'
 
             - task: AzureWebApp@1
               displayName: "Déploiement de CarteDeCredit.API"
