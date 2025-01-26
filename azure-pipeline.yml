@@ -172,7 +172,7 @@ stages:
                 azureSubscription: $(serviceconnection)
                 appType: webApp
                 appName: 'webapp-apiassurance-fnz77m5mskwra'
-                package: '$(System.ArtifactsDirectory)/Assurances.API/*.zip'
+                package: '/home/vsts/work/1/a/drop/Assurances.API/Assurances.API.zip'
 
             - task: AzureWebApp@1
               displayName: "Déploiement de CalculInterets.API"
