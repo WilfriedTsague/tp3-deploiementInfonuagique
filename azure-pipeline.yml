@@ -95,6 +95,8 @@ stages:
             steps:
             - task: DownloadBuildArtifacts@0
               inputs:
+                buildType: 'current'
+                downloadType: 'single'
                 artifactName: 'drop'
                 downloadPath: '$(System.ArtifactsDirectory)'
 
