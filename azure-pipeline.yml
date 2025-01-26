@@ -116,7 +116,7 @@ stages:
                 azureSubscription: $(serviceconnection)
                 appType: webApp
                 appName: 'webapp-apiassurance-fnz77m5mskwra'
-                package: '$(System.ArtifactsDirectory)/Assurances.API/*.zip'
+                package: '$(System.ArtifactsDirectory)/**/Assurances.API/*.zip'
               
             - task: AzureWebApp@1
               displayName: "Déploiement de CarteDeCredit.API"
@@ -124,7 +124,7 @@ stages:
                 azureSubscription: $(serviceconnection)
                 appType: webApp
                 appName: 'webapp-apicredit-fnz77m5mskwra'
-                package: '$(System.ArtifactsDirectory)/CarteDeCredit.API/*.zip'
+                package: '$(System.ArtifactsDirectory)/**/CarteDeCredit.API/*.zip'
 
     - deployment: 'DeployMVCToDev'
       environment: 'dev'
@@ -146,7 +146,7 @@ stages:
                 azureSubscription: $(serviceconnection)
                 appType: webApp
                 appName: 'webapp-mvc-fnz77m5mskwra'
-                package: '$(System.ArtifactsDirectory)/BanqueTardiMVC/*.zip'
+                package: '$(System.ArtifactsDirectory)/**/BanqueTardiMVC/*.zip'
 
 - stage: 'DeployProd'
   displayName: "Deploiment en Prod"
@@ -172,7 +172,7 @@ stages:
                 azureSubscription: $(serviceconnection)
                 appType: webApp
                 appName: 'webapp-apiinteret-fnz77m5mskwra'
-                package: '$(System.ArtifactsDirectory)/CalculInterets.API/*.zip'
+                package: '$(System.ArtifactsDirectory)/**/CalculInterets.API/*.zip'
                 
             - task: AzureWebApp@1
               displayName: "Déploiement de Assurances.API"
@@ -180,7 +180,7 @@ stages:
                 azureSubscription: $(serviceconnection)
                 appType: webApp
                 appName: 'webapp-apiassurance-fnz77m5mskwra'
-                package: '$(System.ArtifactsDirectory)/Assurances.API/*.zip'
+                package: '$(System.ArtifactsDirectory)/**/Assurances.API/*.zip'
 
             - task: AzureWebApp@1
               displayName: "Déploiement de CarteDeCredit.API"
@@ -188,7 +188,7 @@ stages:
                 azureSubscription: $(serviceconnection)
                 appType: webApp
                 appName: 'webapp-apicredit-fnz77m5mskwra'
-                package: '$(System.ArtifactsDirectory)/CarteDeCredit.API/*.zip'
+                package: '$(System.ArtifactsDirectory)/**/CarteDeCredit.API/*.zip'
 
     - deployment: 'DeployMVCProd'
       environment: 'prod'
@@ -211,4 +211,4 @@ stages:
                 azureSubscription: $(serviceconnection)
                 appType: webApp
                 appName: 'webapp-mvc-fnz77m5mskwra'
-                package: '$(System.ArtifactsDirectory)/BanqueTardiMVC/*.zip'
+                package: '$(System.ArtifactsDirectory)/**/BanqueTardiMVC/*.zip'
