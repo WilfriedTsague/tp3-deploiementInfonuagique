@@ -161,6 +161,7 @@ stages:
         runOnce:
           deploy:
             steps:
+            - checkout: self
             - task: DownloadBuildArtifacts@0
               inputs:
                 artifactName: 'drop'
@@ -198,6 +199,7 @@ stages:
         runOnce:
           deploy:
             steps:
+            - checkout: self
             - task: DownloadBuildArtifacts@0
               displayName: 'Télécharger Artefact pour déploiement MVC'
               inputs:
