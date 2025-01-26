@@ -101,7 +101,7 @@ stages:
                 buildType: 'current'
                 downloadType: 'single'
                 artifactName: 'drop'
-                downloadPath: '$(System.ArtifactsDirectory)'
+                downloadPath: '$(System.ArtifactsDirectory)/CalculInterets.API/*.zip'
 
             - task: AzureWebApp@1
               displayName: "Déploiement de CalculInterets.API"
