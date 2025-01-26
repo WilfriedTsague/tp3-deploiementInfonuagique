@@ -49,7 +49,7 @@ stages:
           publishWebProjects: false
           projects: '**/BanqueTardiTP/Assurances.API/*.csproj'
           arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)/Assurances.API'
-          zipAfterPublish: true
+
 
       - task: DotNetCoreCLI@2
         displayName: "Publication de CalculInterets.API"
@@ -58,7 +58,7 @@ stages:
           publishWebProjects: false
           projects: '**/BanqueTardiTP/CalculInterets.API/*.csproj'
           arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)/CalculInterets.API'
-          zipAfterPublish: true
+
       
       - task: DotNetCoreCLI@2
         displayName: "Publication de l'application MVC"
@@ -67,7 +67,7 @@ stages:
           publishWebProjects: true
           projects: '**/BanqueTardiTP/BanqueTardi/*.csproj'
           arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)/BanqueTardiMVC'
-          zipAfterPublish: true
+
 
       - task: DotNetCoreCLI@2
         displayName: "Publication de CarteDeCredit.API"
@@ -76,7 +76,6 @@ stages:
           publishWebProjects: false
           projects: '**/BanqueTardiTP/CarteDeCredit.API/*.csproj'
           arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)/CarteDeCredit.API'
-          zipAfterPublish: true
 
       - task: PublishBuildArtifacts@1
         displayName: 'Publication du package dans Azure DevOps'
