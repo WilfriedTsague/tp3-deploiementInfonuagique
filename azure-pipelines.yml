@@ -1,0 +1,73 @@
+trigger:
+  - main  # Déclenche le pipeline sur push dans la branche main
+
+variables:
+  acrName: 'acrcartecredit' 
+  acrLoginServer: 'acrcartecredit.azurecr.io'
+  containerName: 'mon-image' 
+  tag: 'latest'
+  azureSubscription: 'sc-azure-Hinault-TP4'
+  resourceGroup: 'rg-wilfried'
+  containerInstanceName: 'function-container-instance'
+  location: 'canadacentral'
+
+stages:
+  - stage: BuildAndPush
+    displayName: "Build & Push Image to ACR"
+    jobs:
+      - job: Build
+        displayName: "Build & Push Docker Image"
+        pool:
+          vmImage: 'ubuntu-latest'
+        steps:
+          - task: AzureCLI@2
+            displayName: "Login to Azure"
+            inputs:
+              azureSubscription: $(azureSubscription)
+              scriptType: 'bash'
+              scriptLocation: 'inlineScript'
+              inlineScript: |
+                az acr login --name $(acrName)
+
+          - task: Docker@2
+            displayName: "Build Docker Image"
+            inputs:
+              command: 'build'
+              dockerfile: 'Dockerfile'
+              repository: "$(acrLoginServer)/$(containerName)"
+              tags: "$(tag)"
+
+          - task: Docker@2
+            displayName: "Push Image to ACR"
+            inputs:
+              command: 'push'
+              repository: "$(acrLoginServer)/$(containerName)"
+              tags: "$(tag)"
+
+  - stage: DeployToACI
+    displayName: "Deploy to Azure Container Instance"
+    dependsOn: BuildAndPush
+    jobs:
+      - job: Deploy
+        displayName: "Deploy ACI"
+        pool:
+          vmImage: 'ubuntu-latest'
+        steps:
+          - task: AzureCLI@2
+            displayName: "Deploy ACI"
+            inputs:
+              azureSubscription: $(azureSubscription)
+              scriptType: 'bash'
+              scriptLocation: 'inlineScript'
+              inlineScript: |
+                az container create \
+                  --resource-group $(resourceGroup) \
+                  --name $(containerInstanceName) \
+                  --image $(acrLoginServer)/$(containerName):$(tag) \
+                  --cpu 1 \
+                  --memory 2 \
+                  --registry-login-server $(acrLoginServer) \
+                  --registry-username $(az acr credential show --name $(acrName) --query username -o tsv) \
+                  --registry-password $(az acr credential show --name $(acrName) --query passwords[0].value -o tsv) \
+                  --dns-name-label $(containerInstanceName) \
+                  --ports 80
