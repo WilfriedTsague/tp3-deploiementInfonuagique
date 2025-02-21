@@ -8,7 +8,7 @@ variables:
   tag: 'latest'
   azureSubscription: 'sc-azure-Hinault-TP4'
   resourceGroup: 'rg-wilfried'
-  containerInstanceName: acrcartecredit'
+  containerInstanceName: 'acrcartecredit'
   location: 'canadacentral'
 
 stages:
@@ -34,7 +34,7 @@ stages:
             inputs:
               command: 'build'
               dockerfile: '$(Build.SourcesDirectory)/BanqueTardiTP/CarteDeCredit.API/Dockerfile'
-              repository: "$(acrLoginServer)/$(containerName)"
+              repository: "$(acrLoginServer)"
               tags: "$(tag)"
           - script: ls -l $(Build.SourcesDirectory)
             displayName: "Lister les fichiers sources"
@@ -44,7 +44,7 @@ stages:
             displayName: "Push Image to ACR"
             inputs:
               command: 'push'
-              repository: "$(acrLoginServer)/$(containerName)"
+              repository: "$(acrLoginServer)"
               tags: "$(tag)"
 
   - stage: DeployToACI
