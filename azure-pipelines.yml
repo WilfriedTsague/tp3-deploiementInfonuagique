@@ -4,7 +4,7 @@ trigger:
 variables:
   acrName: 'acrcartecredit' 
   acrLoginServer: 'acrcartecredit.azurecr.io'
-  containerName: 'mon-image' 
+  containerName: 'acicartecredit' 
   tag: 'latest'
   azureSubscription: 'sc-azure-Hinault-TP4'
   resourceGroup: 'rg-wilfried'
@@ -36,6 +36,9 @@ stages:
               dockerfile: '$(Build.SourcesDirectory)/BanqueTardiTP/CarteDeCredit.API/Dockerfile'
               repository: "$(acrLoginServer)/$(containerName)"
               tags: "$(tag)"
+          - script: ls -l $(Build.SourcesDirectory)
+            displayName: "Lister les fichiers sources"
+
 
           - task: Docker@2
             displayName: "Push Image to ACR"
