@@ -36,8 +36,12 @@ stages:
               dockerfile: '$(Build.SourcesDirectory)/BanqueTardiTP/CarteDeCredit.API/Dockerfile'
               repository: "$(acrLoginServer)"
               tags: "$(tag)"
-          - script: ls -l $(Build.SourcesDirectory)
-            displayName: "Lister les fichiers sources"
+          - script: echo $(Build.SourcesDirectory)
+            displayName: "Afficher le répertoire source"
+          - script: ls -R $(Build.SourcesDirectory)/BanqueTardiTP/CarteDeCredit.API
+            displayName: "Lister le contenu du dossier de l'API"
+
+
 
 
           - task: Docker@2
