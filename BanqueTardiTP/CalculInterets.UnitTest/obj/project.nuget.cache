@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "/6AyRAQww6A=",
+  "dgSpecHash": "GxYqrfhzw9Q=",
   "success": true,
-  "projectFilePath": "E:\\Bloc IV\\Deploiement Infonuagique\\Tp3\\tp3-deploiementInfonuagique\\BanqueTardiTP\\CalculInterets.UnitTest\\CalculInterets.UnitTest.csproj",
+  "projectFilePath": "E:\\Bloc IV\\Deploiement Infonuagique\\TP 4\\tp3-deploiementInfonuagique\\BanqueTardiTP\\CalculInterets.UnitTest\\CalculInterets.UnitTest.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Wilfried TSAGUE\\.nuget\\packages\\coverlet.collector\\6.0.0\\coverlet.collector.6.0.0.nupkg.sha512",
     "C:\\Users\\Wilfried TSAGUE\\.nuget\\packages\\microsoft.codecoverage\\17.6.0\\microsoft.codecoverage.17.6.0.nupkg.sha512",

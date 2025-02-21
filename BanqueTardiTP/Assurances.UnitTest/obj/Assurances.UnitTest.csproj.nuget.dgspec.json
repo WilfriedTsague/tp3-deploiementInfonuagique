@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "E:\\Bloc IV\\Deploiement Infonuagique\\Tp3\\tp3-deploiementInfonuagique\\BanqueTardiTP\\Assurances.UnitTest\\Assurances.UnitTest.csproj": {}
+    "E:\\Bloc IV\\Deploiement Infonuagique\\TP 4\\tp3-deploiementInfonuagique\\BanqueTardiTP\\Assurances.UnitTest\\Assurances.UnitTest.csproj": {}
   },
   "projects": {
-    "E:\\Bloc IV\\Deploiement Infonuagique\\Tp3\\tp3-deploiementInfonuagique\\BanqueTardiTP\\Assurances.UnitTest\\Assurances.UnitTest.csproj": {
+    "E:\\Bloc IV\\Deploiement Infonuagique\\TP 4\\tp3-deploiementInfonuagique\\BanqueTardiTP\\Assurances.UnitTest\\Assurances.UnitTest.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Bloc IV\\Deploiement Infonuagique\\Tp3\\tp3-deploiementInfonuagique\\BanqueTardiTP\\Assurances.UnitTest\\Assurances.UnitTest.csproj",
+        "projectUniqueName": "E:\\Bloc IV\\Deploiement Infonuagique\\TP 4\\tp3-deploiementInfonuagique\\BanqueTardiTP\\Assurances.UnitTest\\Assurances.UnitTest.csproj",
         "projectName": "Assurances.UnitTest",
-        "projectPath": "E:\\Bloc IV\\Deploiement Infonuagique\\Tp3\\tp3-deploiementInfonuagique\\BanqueTardiTP\\Assurances.UnitTest\\Assurances.UnitTest.csproj",
+        "projectPath": "E:\\Bloc IV\\Deploiement Infonuagique\\TP 4\\tp3-deploiementInfonuagique\\BanqueTardiTP\\Assurances.UnitTest\\Assurances.UnitTest.csproj",
         "packagesPath": "C:\\Users\\Wilfried TSAGUE\\.nuget\\packages\\",
-        "outputPath": "E:\\Bloc IV\\Deploiement Infonuagique\\Tp3\\tp3-deploiementInfonuagique\\BanqueTardiTP\\Assurances.UnitTest\\obj\\",
+        "outputPath": "E:\\Bloc IV\\Deploiement Infonuagique\\TP 4\\tp3-deploiementInfonuagique\\BanqueTardiTP\\Assurances.UnitTest\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -44,7 +44,8 @@
           "enableAudit": "true",
           "auditLevel": "low",
           "auditMode": "direct"
-        }
+        },
+        "SdkAnalysisLevel": "9.0.200"
       },
       "frameworks": {
         "net8.0": {
@@ -87,7 +88,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.300/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.200/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

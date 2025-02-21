@@ -2,5 +2,6 @@
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <ActiveDebugProfile>https</ActiveDebugProfile>
+    <NameOfLastUsedPublishProfile>E:\Bloc IV\Deploiement Infonuagique\TP 4\tp3-deploiementInfonuagique\BanqueTardiTP\CarteDeCredit.API\Properties\PublishProfiles\acrcartecredit1.pubxml</NameOfLastUsedPublishProfile>
   </PropertyGroup>
 </Project>

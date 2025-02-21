@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "/wganIlp5XA=",
+  "dgSpecHash": "Jnmj30JxtfM=",
   "success": true,
-  "projectFilePath": "E:\\Bloc IV\\Deploiement Infonuagique\\Tp3\\tp3-deploiementInfonuagique\\BanqueTardiTP\\CarteDeCredit.API\\CarteDeCredit.API.csproj",
+  "projectFilePath": "E:\\Bloc IV\\Deploiement Infonuagique\\TP 4\\tp3-deploiementInfonuagique\\BanqueTardiTP\\CarteDeCredit.API\\CarteDeCredit.API.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Wilfried TSAGUE\\.nuget\\packages\\humanizer\\2.14.1\\humanizer.2.14.1.nupkg.sha512",
     "C:\\Users\\Wilfried TSAGUE\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
@@ -103,6 +103,7 @@
     "C:\\Users\\Wilfried TSAGUE\\.nuget\\packages\\microsoft.jsinterop\\8.0.8\\microsoft.jsinterop.8.0.8.nupkg.sha512",
     "C:\\Users\\Wilfried TSAGUE\\.nuget\\packages\\microsoft.net.stringtools\\17.8.3\\microsoft.net.stringtools.17.8.3.nupkg.sha512",
     "C:\\Users\\Wilfried TSAGUE\\.nuget\\packages\\microsoft.openapi\\1.2.3\\microsoft.openapi.1.2.3.nupkg.sha512",
+    "C:\\Users\\Wilfried TSAGUE\\.nuget\\packages\\microsoft.visualstudio.azure.containers.tools.targets\\1.21.0\\microsoft.visualstudio.azure.containers.tools.targets.1.21.0.nupkg.sha512",
     "C:\\Users\\Wilfried TSAGUE\\.nuget\\packages\\microsoft.visualstudio.web.codegeneration\\8.0.5\\microsoft.visualstudio.web.codegeneration.8.0.5.nupkg.sha512",
     "C:\\Users\\Wilfried TSAGUE\\.nuget\\packages\\microsoft.visualstudio.web.codegeneration.core\\8.0.5\\microsoft.visualstudio.web.codegeneration.core.8.0.5.nupkg.sha512",
     "C:\\Users\\Wilfried TSAGUE\\.nuget\\packages\\microsoft.visualstudio.web.codegeneration.design\\8.0.5\\microsoft.visualstudio.web.codegeneration.design.8.0.5.nupkg.sha512",

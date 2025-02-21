@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "EAua68zXifc=",
+  "dgSpecHash": "ptRzZXV3+mA=",
   "success": true,
-  "projectFilePath": "E:\\Bloc IV\\Deploiement Infonuagique\\Tp3\\tp3-deploiementInfonuagique\\BanqueTardiTP\\CarteDeCredit.UnitTest\\CarteDeCredit.UnitTest.csproj",
+  "projectFilePath": "E:\\Bloc IV\\Deploiement Infonuagique\\TP 4\\tp3-deploiementInfonuagique\\BanqueTardiTP\\CarteDeCredit.UnitTest\\CarteDeCredit.UnitTest.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Wilfried TSAGUE\\.nuget\\packages\\coverlet.collector\\6.0.0\\coverlet.collector.6.0.0.nupkg.sha512",
     "C:\\Users\\Wilfried TSAGUE\\.nuget\\packages\\humanizer\\2.14.1\\humanizer.2.14.1.nupkg.sha512",
@@ -108,6 +108,7 @@
     "C:\\Users\\Wilfried TSAGUE\\.nuget\\packages\\microsoft.openapi\\1.2.3\\microsoft.openapi.1.2.3.nupkg.sha512",
     "C:\\Users\\Wilfried TSAGUE\\.nuget\\packages\\microsoft.testplatform.objectmodel\\17.6.0\\microsoft.testplatform.objectmodel.17.6.0.nupkg.sha512",
     "C:\\Users\\Wilfried TSAGUE\\.nuget\\packages\\microsoft.testplatform.testhost\\17.6.0\\microsoft.testplatform.testhost.17.6.0.nupkg.sha512",
+    "C:\\Users\\Wilfried TSAGUE\\.nuget\\packages\\microsoft.visualstudio.azure.containers.tools.targets\\1.21.0\\microsoft.visualstudio.azure.containers.tools.targets.1.21.0.nupkg.sha512",
     "C:\\Users\\Wilfried TSAGUE\\.nuget\\packages\\microsoft.visualstudio.web.codegeneration\\8.0.5\\microsoft.visualstudio.web.codegeneration.8.0.5.nupkg.sha512",
     "C:\\Users\\Wilfried TSAGUE\\.nuget\\packages\\microsoft.visualstudio.web.codegeneration.core\\8.0.5\\microsoft.visualstudio.web.codegeneration.core.8.0.5.nupkg.sha512",
     "C:\\Users\\Wilfried TSAGUE\\.nuget\\packages\\microsoft.visualstudio.web.codegeneration.design\\8.0.5\\microsoft.visualstudio.web.codegeneration.design.8.0.5.nupkg.sha512",

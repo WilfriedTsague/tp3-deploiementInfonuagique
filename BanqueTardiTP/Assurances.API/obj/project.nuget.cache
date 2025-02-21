@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "Jio6s1t8lOw=",
+  "dgSpecHash": "znKfKukT+mg=",
   "success": true,
-  "projectFilePath": "E:\\Bloc IV\\Deploiement Infonuagique\\Tp3\\tp3-deploiementInfonuagique\\BanqueTardiTP\\Assurances.API\\Assurances.API.csproj",
+  "projectFilePath": "E:\\Bloc IV\\Deploiement Infonuagique\\TP 4\\tp3-deploiementInfonuagique\\BanqueTardiTP\\Assurances.API\\Assurances.API.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Wilfried TSAGUE\\.nuget\\packages\\humanizer\\2.14.1\\humanizer.2.14.1.nupkg.sha512",
     "C:\\Users\\Wilfried TSAGUE\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",

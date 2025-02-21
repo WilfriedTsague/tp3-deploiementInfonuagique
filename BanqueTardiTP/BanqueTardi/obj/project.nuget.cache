@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "IcGsgZi1jqw=",
+  "dgSpecHash": "AdxQ5424Hyc=",
   "success": true,
-  "projectFilePath": "E:\\Bloc IV\\Deploiement Infonuagique\\Tp3\\tp3-deploiementInfonuagique\\BanqueTardiTP\\BanqueTardi\\BanqueTardi.MVC.csproj",
+  "projectFilePath": "E:\\Bloc IV\\Deploiement Infonuagique\\TP 4\\tp3-deploiementInfonuagique\\BanqueTardiTP\\BanqueTardi\\BanqueTardi.MVC.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Wilfried TSAGUE\\.nuget\\packages\\azure.core\\1.44.1\\azure.core.1.44.1.nupkg.sha512",
     "C:\\Users\\Wilfried TSAGUE\\.nuget\\packages\\azure.identity\\1.13.1\\azure.identity.1.13.1.nupkg.sha512",
