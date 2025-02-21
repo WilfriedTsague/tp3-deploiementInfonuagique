@@ -33,7 +33,7 @@ stages:
             displayName: "Build Docker Image"
             inputs:
               command: 'build'
-              dockerfile: 'Dockerfile'
+              dockerfile: '$(Build.SourcesDirectory)/BanqueTardiTP/CarteDeCredit.API/Dockerfile'
               repository: "$(acrLoginServer)/$(containerName)"
               tags: "$(tag)"
 
