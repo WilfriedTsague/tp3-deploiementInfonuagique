@@ -1,0 +1,213 @@
+trigger:
+- main
+
+variables:
+  buildConfiguration: 'Release'
+  serviceconnection: 'sc-azure-Hinault-TP 3'
+
+stages:
+- stage: 'Build'
+  displayName: "build , execution des tests et publication"
+  pool:
+    vmImage: ubuntu-latest
+  jobs:
+    - job: 'BuildAPIs'
+      steps:
+      - task: UseDotNet@2
+        inputs:
+          packageType: sdk
+          version: '9.0.101'
+          installationPath: $(Agent.ToolsDirectory)/dotnet 
+
+      - task: DotNetCoreCLI@2
+        displayName: 'Restauration des packages NuGet'
+        inputs:
+          command: 'restore'
+          projects: '**/*.csproj'
+          feedsToUse: 'select'
+      
+      - task: DotNetCoreCLI@2
+        displayName: 'Execution des test unitaires'
+        inputs:
+          command: 'test'
+          projects: |
+            '**/BanqueTardiTP/*.UnitTest/*.UnitTest.csproj'
+          arguments: '--configuration $(buildConfiguration)'
+
+      - task: DotNetCoreCLI@2
+        displayName: 'Compilation des API et MVC'
+        inputs:
+          command: 'build'
+          projects: '**/*.csproj'
+          arguments: '--configuration $(buildConfiguration)'
+          
+      - task: DotNetCoreCLI@2
+        displayName: "Publication de Assurances.API"
+        inputs:
+          command: publish
+          publishWebProjects: false
+          projects: '**/BanqueTardiTP/Assurances.API/*.csproj'
+          arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)/Assurances.API'
+
+
+      - task: DotNetCoreCLI@2
+        displayName: "Publication de CalculInterets.API"
+        inputs:
+          command: publish
+          publishWebProjects: false
+          projects: '**/BanqueTardiTP/CalculInterets.API/*.csproj'
+          arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)/CalculInterets.API'
+
+      
+      - task: DotNetCoreCLI@2
+        displayName: "Publication de l'application MVC"
+        inputs:
+          command: publish
+          publishWebProjects: true
+          projects: '**/BanqueTardiTP/BanqueTardi/*.csproj'
+          arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)/BanqueTardiMVC'
+
+
+      - task: DotNetCoreCLI@2
+        displayName: "Publication de CarteDeCredit.API"
+        inputs:
+          command: publish
+          publishWebProjects: false
+          projects: '**/BanqueTardiTP/CarteDeCredit.API/*.csproj'
+          arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)/CarteDeCredit.API'
+
+      - task: PublishBuildArtifacts@1
+        displayName: 'Publication du package dans Azure DevOps'
+        inputs:
+          PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+          ArtifactName: 'drop'
+          publishLocation: 'Container'
+
+- stage: 'DeployDev'
+  displayName: "Deploiment en Dev"
+  pool:
+    vmImage: ubuntu-latest
+  dependsOn: Build
+  jobs:
+    - deployment: 'DeployAPIsToDev'
+      environment: 'dev'
+      strategy: 
+        runOnce:
+          deploy:
+            steps:
+            - task: DownloadBuildArtifacts@0
+              inputs:
+                buildType: 'current'
+                downloadType: 'single'
+                artifactName: 'drop'
+                downloadPath: '$(System.ArtifactsDirectory)'
+
+            - task: AzureWebApp@1
+              displayName: "Déploiement de CalculInterets.API"
+              inputs:
+                azureSubscription: $(serviceconnection)
+                appType: webApp
+                appName: 'webapp-apiinteret-fnz77m5mskwra'
+                package: '$(System.ArtifactsDirectory)/**/CalculInterets.API/*.zip'
+            - task: AzureWebApp@1
+              displayName: "Déploiement de Assurances.API"
+              inputs:
+                azureSubscription: $(serviceconnection)
+                appType: webApp
+                appName: 'webapp-apiassurance-fnz77m5mskwra'
+                package: '$(System.ArtifactsDirectory)/**/Assurances.API/*.zip'
+              
+            - task: AzureWebApp@1
+              displayName: "Déploiement de CarteDeCredit.API"
+              inputs:
+                azureSubscription: $(serviceconnection)
+                appType: webApp
+                appName: 'webapp-apicredit-fnz77m5mskwra'
+                package: '$(System.ArtifactsDirectory)/**/CarteDeCredit.API/*.zip'
+
+    - deployment: 'DeployMVCToDev'
+      environment: 'dev'
+      dependsOn: 'DeployAPIsToDev'
+      condition: succeeded()
+      strategy: 
+        runOnce:
+          deploy:
+            steps:
+            - task: DownloadBuildArtifacts@0
+              displayName: 'Télécharger Artefact pour déploiement MVC'
+              inputs:
+                artifactName: 'drop'
+                downloadPath: '$(System.ArtifactsDirectory)'
+            
+            - task: AzureWebApp@1
+              displayName: "Déploiement du MVC"
+              inputs:
+                azureSubscription: $(serviceconnection)
+                appType: webApp
+                appName: 'webapp-mvc-fnz77m5mskwra'
+                package: '$(System.ArtifactsDirectory)/**/BanqueTardiMVC/*.zip'
+
+- stage: 'DeployProd'
+  displayName: "Deploiment en Prod"
+  pool:
+    vmImage: ubuntu-latest
+  dependsOn: 'DeployDev'
+  jobs:
+    - deployment: 'DeployAPIsToProd'
+      environment: 'prod'
+      strategy: 
+        runOnce:
+          deploy:
+            steps:
+            - checkout: self
+            - task: DownloadBuildArtifacts@0
+              inputs:
+                artifactName: 'drop'
+                downloadPath: '$(System.ArtifactsDirectory)'
+
+            - task: AzureWebApp@1
+              displayName: "Déploiement de CalculInterets.API"
+              inputs:
+                azureSubscription: $(serviceconnection)
+                appType: webApp
+                appName: 'webapp-apiinteret-fnz77m5mskwra'
+                package: '$(System.ArtifactsDirectory)/**/CalculInterets.API/*.zip'
+                
+            - task: AzureWebApp@1
+              displayName: "Déploiement de Assurances.API"
+              inputs:
+                azureSubscription: $(serviceconnection)
+                appType: webApp
+                appName: 'webapp-apiassurance-fnz77m5mskwra'
+                package: '$(System.ArtifactsDirectory)/**/Assurances.API/*.zip'
+
+            - task: AzureWebApp@1
+              displayName: "Déploiement de CarteDeCredit.API"
+              inputs:
+                azureSubscription: $(serviceconnection)
+                appType: webApp
+                appName: 'webapp-apicredit-fnz77m5mskwra'
+                package: '$(System.ArtifactsDirectory)/**/CarteDeCredit.API/*.zip'
+
+    - deployment: 'DeployMVCProd'
+      environment: 'prod'
+      dependsOn: 'DeployAPIsToProd'
+      condition: succeeded()
+      strategy: 
+        runOnce:
+          deploy:
+            steps:
+            - checkout: self
+            - task: DownloadBuildArtifacts@0
+              displayName: 'Télécharger Artefact pour déploiement MVC'
+              inputs:
+                artifactName: 'drop'
+                downloadPath: '$(System.ArtifactsDirectory)'
+
+            - task: AzureWebApp@1
+              displayName: "Déploiement du MVC"
+              inputs:
+                azureSubscription: $(serviceconnection)
+                appType: webApp
+                appName: 'webapp-mvc-fnz77m5mskwra'
+                package: '$(System.ArtifactsDirectory)/**/BanqueTardiMVC/*.zip'
