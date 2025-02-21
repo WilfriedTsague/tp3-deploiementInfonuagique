@@ -8,7 +8,7 @@ variables:
   tag: 'latest'
   azureSubscription: 'sc-azure-Hinault-TP4'
   resourceGroup: 'rg-wilfried'
-  containerInstanceName: 'function-container-instance'
+  containerInstanceName: acrcartecredit'
   location: 'canadacentral'
 
 stages:
