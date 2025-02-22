@@ -5,7 +5,7 @@ variables:
   acrName: 'acrcartecredit' 
   acrLoginServer: 'acrcartecredit.azurecr.io'
   containerName: 'acrcartecredit' 
-  tag: 'latest'
+  tag: '$(Build.BuildId)'
   azureSubscription: 'sc-azure-Hinault-TP4'
   resourceGroup: 'rg-wilfried'
   containerInstanceName: 'acicartecredit'
@@ -33,17 +33,13 @@ stages:
             displayName: "Build Docker Image"
             inputs:
               command: 'build'
-              dockerfile: 'tp3-deploiementInfonuagique/BanqueTardiTP/CarteDeCredit.API/Dockerfile'
+              dockerfile: ' $(Build.SourcesDirectory)/BanqueTardiTP/CarteDeCredit.API/Dockerfile'
               repository: "cartedecreditapi"
               tags: "$(tag)"
           - script: echo $(Build.SourcesDirectory)
             displayName: "Afficher le répertoire source"
           - script: ls -R $(Build.SourcesDirectory)/BanqueTardiTP/CarteDeCredit.API
             displayName: "Lister le contenu du dossier de l'API"
-
-
-
-
           - task: Docker@2
             displayName: "Push Image to ACR"
             inputs:
