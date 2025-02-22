@@ -1,14 +1,14 @@
 trigger:
-  - main  # Déclenche le pipeline sur push dans la branche main
+  - main  
 
 variables:
   acrName: 'acrcartecredit' 
   acrLoginServer: 'acrcartecredit.azurecr.io'
-  containerName: 'acicartecredit' 
+  containerName: 'acrcartecredit' 
   tag: 'latest'
   azureSubscription: 'sc-azure-Hinault-TP4'
   resourceGroup: 'rg-wilfried'
-  containerInstanceName: 'acrcartecredit'
+  containerInstanceName: 'acicartecredit'
   location: 'canadacentral'
 
 stages:
@@ -34,7 +34,7 @@ stages:
             inputs:
               command: 'build'
               dockerfile: '$(Build.SourcesDirectory)/BanqueTardiTP/CarteDeCredit.API/Dockerfile'
-              repository: "$(acrLoginServer)"
+              repository: "cartedecreditapi"
               tags: "$(tag)"
           - script: echo $(Build.SourcesDirectory)
             displayName: "Afficher le répertoire source"
