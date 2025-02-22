@@ -33,7 +33,7 @@ stages:
             displayName: "Build Docker Image"
             inputs:
               command: 'build'
-              dockerfile: ' $(Build.SourcesDirectory)/BanqueTardiTP/CarteDeCredit.API/Dockerfile'
+              dockerfile: '$(Build.SourcesDirectory)/BanqueTardiTP/CarteDeCredit.API/Dockerfile'
               repository: "cartedecreditapi"
               tags: "$(tag)"
           - script: echo $(Build.SourcesDirectory)
