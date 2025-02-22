@@ -34,6 +34,7 @@ stages:
             inputs:
               command: 'build'
               dockerfile: '$(Build.SourcesDirectory)/BanqueTardiTP/CarteDeCredit.API/Dockerfile'
+              buildContext: '$(Build.SourcesDirectory)/BanqueTardiTP/CarteDeCredit.API'
               repository: "cartedecreditapi"
               tags: "$(tag)"
           - script: echo $(Build.SourcesDirectory)
