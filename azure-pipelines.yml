@@ -1,0 +1,77 @@
+trigger:
+  - main  
+
+variables:
+  acrName: 'acrcartecredit' 
+  acrLoginServer: 'acrcartecredit.azurecr.io'
+  containerName: 'acrcartecredit' 
+  tag: '$(Build.BuildId)'
+  azureSubscription: 'sc-azure-Hinault-TP4'
+  resourceGroup: 'rg-wilfried'
+  containerInstanceName: 'acicartecredit'
+  location: 'canadacentral'
+
+stages:
+  - stage: BuildAndPush
+    displayName: "Build & Push Image to ACR"
+    jobs:
+      - job: Build
+        displayName: "Build & Push Docker Image"
+        pool:
+          vmImage: 'ubuntu-latest'
+        steps:
+          - task: AzureCLI@2
+            displayName: "Login to Azure"
+            inputs:
+              azureSubscription: $(azureSubscription)
+              scriptType: 'bash'
+              scriptLocation: 'inlineScript'
+              inlineScript: |
+                az acr login --name $(acrName)
+
+          - task: Docker@2
+            displayName: "Build Docker Image"
+            inputs:
+              command: 'build'
+              buildContext: '$(Build.SourcesDirectory)/BanqueTardiTP/CarteDeCredit.API'
+              dockerfile: '$(Build.SourcesDirectory)/BanqueTardiTP/CarteDeCredit.API/Dockerfile'
+              repository: "cartedecreditapi"
+              tags: "$(tag)"
+          - script: echo $(Build.SourcesDirectory)
+            displayName: "Afficher le répertoire source"
+          - script: ls -R $(Build.SourcesDirectory)/BanqueTardiTP/CarteDeCredit.API
+            displayName: "Lister le contenu du dossier de l'API"
+          - task: Docker@2
+            displayName: "Push Image to ACR"
+            inputs:
+              command: 'push'
+              repository: "$(acrLoginServer)"
+              tags: "$(tag)"
+
+  - stage: DeployToACI
+    displayName: "Deploy to Azure Container Instance"
+    dependsOn: BuildAndPush
+    jobs:
+      - job: Deploy
+        displayName: "Deploy ACI"
+        pool:
+          vmImage: 'ubuntu-latest'
+        steps:
+          - task: AzureCLI@2
+            displayName: "Deploy ACI"
+            inputs:
+              azureSubscription: $(azureSubscription)
+              scriptType: 'bash'
+              scriptLocation: 'inlineScript'
+              inlineScript: |
+                az container create \
+                  --resource-group $(resourceGroup) \
+                  --name $(containerInstanceName) \
+                  --image $(acrLoginServer)/$(containerName):$(tag) \
+                  --cpu 1 \
+                  --memory 2 \
+                  --registry-login-server $(acrLoginServer) \
+                  --registry-username $(az acr credential show --name $(acrName) --query username -o tsv) \
+                  --registry-password $(az acr credential show --name $(acrName) --query passwords[0].value -o tsv) \
+                  --dns-name-label $(containerInstanceName) \
+                  --ports 80
