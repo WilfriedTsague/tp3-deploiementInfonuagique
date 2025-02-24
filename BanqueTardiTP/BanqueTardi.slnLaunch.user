@@ -1,0 +1,23 @@
+[
+  {
+    "Name": "Nouveau profil",
+    "Projects": [
+      {
+        "Path": "BanqueTardi\\BanqueTardi.MVC.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "CalculInterets.API\\CalculInterets.API.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "CarteDeCredit.API\\CarteDeCredit.API.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "Assurances.API\\Assurances.API.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]

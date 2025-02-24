@@ -12,12 +12,24 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
  builder.Services.AddDbContext<ClientContext>(options =>
-      options.UseSqlServer(builder.Configuration.GetConnectionString("AzureSQLConnection")));
+      options.UseSqlite(builder.Configuration.GetConnectionString("StorageConnectionString")));
+
+
+var redisConnectionString = builder.Configuration.GetSection("RedisCacheSettings")["ConnectionString"];
+
+
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = redisConnectionString;
+});
+
+builder.Services.AddSingleton<RedisCacheService>();
+
 
 // Azure storage account
 builder.Services.AddAzureClients(configure =>
 {
-    configure.AddQueueServiceClient(builder.Configuration.GetConnectionString("StorageConnectionString"));
+    configure.AddQueueServiceClient(builder.Configuration.GetConnectionString("AzureSQLConnection"));
 });
 
 builder.Services.AddScoped<IStorageServiceHelper, StorageServiceHelper>();

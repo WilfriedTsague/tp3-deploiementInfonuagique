@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Assurances.UnitTest")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e975a2567bb3d24cb7d58460b2760bf386a3cfcf")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+967e4112f2a942c3ef5dcc4942de0e958c34d613")]
 [assembly: System.Reflection.AssemblyProductAttribute("Assurances.UnitTest")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Assurances.UnitTest")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
